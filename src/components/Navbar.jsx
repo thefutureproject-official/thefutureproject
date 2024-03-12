@@ -1,10 +1,13 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CgProfile } from "react-icons/cg";
 import { PiAppStoreLogoDuotone } from "react-icons/pi";
+import AuthModal from './AuthModal';
 
 const Navbar = () => {
+
+    const [modal, setModal] = useState(false);
     return (
         <>
             <div className='outer p-4 '>
@@ -28,10 +31,20 @@ const Navbar = () => {
                         <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full'><h1>Subscription</h1></div>
                         <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full'><h1>Contact</h1></div>
                     </div>
-                    <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full flex gap-2 mr-3'>
+                    <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full flex gap-2 mr-3'
+                    onClick={()=>{
+                        setModal(true);
+                    }}
+                    >
                         <div className='mt-1'><CgProfile /></div>
-                        <div><h1>Sign up / Log in</h1></div>
+                        <div>
+                            <button>Sign up / Log in</button>
+                        </div>
                     </div>
+                    {
+                        modal && <AuthModal onclose={()=>setModal(false)}/>
+                    }
+
                 </motion.div>
             </div>
         </>
