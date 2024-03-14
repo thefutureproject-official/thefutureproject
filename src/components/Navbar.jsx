@@ -4,10 +4,12 @@ import { motion } from 'framer-motion'
 import { CgProfile } from "react-icons/cg";
 import { PiAppStoreLogoDuotone } from "react-icons/pi";
 import AuthModal from './AuthModal';
+import { signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
 
     const [modal, setModal] = useState(false);
+    const session = useSession();
     return (
         <>
             <div className='outer p-4 '>
@@ -31,19 +33,44 @@ const Navbar = () => {
                         <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full'><h1>Subscription</h1></div>
                         <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full'><h1>Contact</h1></div>
                     </div>
-                    <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full flex gap-2 mr-3'
-                    onClick={()=>{
-                        setModal(true);
-                    }}
-                    >
-                        <div className='mt-1'><CgProfile /></div>
-                        <div>
-                            <button>Sign up / Log in</button>
-                        </div>
-                    </div>
+
                     {
-                        modal && <AuthModal onclose={()=>setModal(false)}/>
+                        session.status == 'unauthenticated' ?
+                            <>
+                                <div className='hover:cursor-pointer transform hover:scale-125 transition ease-in-out duration-150 hover:bg-gray-500  px-5 py-1 rounded-full flex gap-2 mr-3'
+                                    onClick={() => {
+                                        setModal(true);
+                                    }}
+                                >
+                                    <div className='mt-1'><CgProfile /></div>
+                                    <div>
+                                        <button>Sign up / Log in</button>
+                                    </div>
+                                </div>
+                                {
+                                    modal && <AuthModal onclose={() => setModal(false)} />
+                                }
+                            </> :
+                            <>
+                                <div className="account flex gap-2 text-white ">
+
+                                    <div className='h-10 w-10'>
+                                        <img src={session.data?.user?.image} alt="error" className='rounded-full' />
+                                    </div>
+                                    <div >
+                                        <h1 className='mt-2'>{session.data?.user?.name}</h1>
+                                    </div>
+                                    <button className='ml-3 p-1 bg-purple-800 rounded-full px-3 hover:bg-purple-700' onClick={()=>{
+                                        signOut();
+                                    }}>
+                                        <h1 className='mt-1'>Logout</h1>
+                                    </button>
+                                </div>
+
+
+                            </>
                     }
+
 
                 </motion.div>
             </div>
