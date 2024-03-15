@@ -37,7 +37,7 @@ const AuthModal = ({ onclose }) => {
                     initial={{ scale: 0.5 }}
                     animate={{ scale: 1 }}
                     transition={{
-                        duration: 1.3
+                        duration: 0.2
                     }}
                     className='rounded-md w-80 h-fit mt-20 p-9 flex flex-col text-white bg-gradient-to-r from-[#030014] via-[#2a2542] to-[#030014]'>
                     <div className='logo mx-auto'>
