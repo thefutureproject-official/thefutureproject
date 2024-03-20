@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React, { useState } from 'react'
 import { TbAddressBook } from "react-icons/tb";
 import { IoMdCall } from "react-icons/io";
 import { CgMail } from "react-icons/cg";
@@ -11,6 +11,22 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
+
+    const [email,setEmail] = useState("");
+
+    const handleEmail = async()=>{
+        alert(`emali received from ${email}`);
+        const response = await fetch('/api/mail',{
+            method : "POST",
+            headers : {
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify({email})
+        })
+
+        console.log("email status checking : ",response.ok);
+    }
+
     return (
         <>  <div className="outer shadow-lg shadow-slate-500 bg-gradient-to-r from-[#0d0c13] via-[#343046] to-[#0d0c13] rounded-md">
             <div className='text-white   p-6 flex justify-between'>
@@ -61,13 +77,18 @@ const Footer = () => {
                                             <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
                                         </svg>
                                     </div>
-                                    <input type="text" id="email-address-icon" className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-slate-600 block w-full ps-10 p-2.5  dark:bg-gray-700  dark:placeholder-gray-400 dark:text-white " placeholder="enter gmail to invite" />
+                                    <input type="text" id="email-address-icon" className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-slate-600 block w-full ps-10 p-2.5  dark:bg-gray-700  dark:placeholder-gray-400 dark:text-white " placeholder="enter gmail to invite" 
+                                        value={email}
+                                        onChange={(e)=>{
+                                            setEmail(e.target.value);
+                                        }}
+                                    />
                                 </div>
                             </form>
 
                         </div>
                         <div>
-                            <IoMdSend className='text-3xl mt-3 hover:cursor-pointer' />
+                            <IoMdSend className='text-3xl mt-3 hover:cursor-pointer' onClick={handleEmail}/>
                         </div>
                     </div>
                     <div className='flex gap-4 mt-5 '>
